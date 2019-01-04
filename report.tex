@@ -1,0 +1,120 @@
+\documentclass[]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{mathtools,leftidx}% http://ctan.org/pkg/{mathtools,leftidx}
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage[margin=0.7in]{geometry}
+
+
+
+\title{Specyfikacja sterownika robota Velma}
+\author{Jakub Postępski}
+\date{7 stycznia 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Przypadki użycia}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.99\linewidth]{}
+	\caption{Przypadki użycia systemu}
+	\label{fig:uc}
+\end{figure}
+
+\section{Struktura agentów systemu}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.99\linewidth]{}
+	\caption{Struktura agentów}
+	\label{fig:agents}
+\end{figure}
+
+
+\begin{table}[H]
+	\begin{tabular}{||c|cc||}
+		\hline
+		Kanał & Opis & Typ \\
+		\hline\hline
+		Command & - & - \\
+		cip & Polecenie ruchu w przestrzeni kartezjańskiej & struktura \\
+  		jip & Polecenie ruchu w przestrzeni stawów & struktura \\
+  		scl & Polecenie ruch w trybie Self Collision Avoidance & bool \\
+		si & polecenie rozpoczęcia inicjalizacji & bool \\
+		ei & polecenie zakończenia inicjalizacji & bool \\
+		es & polecenie awaryjnego zatrzymania & bool \\
+		\hline
+	\end{tabular}
+	\caption{Zawartość kanałów komunikacyjnych CCVE}
+\end{table}
+
+\begin{table}[H]
+	\begin{tabular}{||c|cc||}
+		\hline
+		Kanał & Opis & Typ \\
+		\hline\hline
+		Command & - & - \\
+		cip & Polecenie ruchu w przestrzeni kartezjańskiej & struktura \\
+		jip & Polecenie ruchu w przestrzeni stawów & struktura \\
+		scl & Polecenie ruch w trybie Self Collision Avoidance & bool \\
+		si & polecenie rozpoczęcia inicjalizacji & bool \\
+		ei & polecenie zakończenia inicjalizacji & bool \\
+		es & polecenie awaryjnego zatrzymania & bool \\
+		\hline
+	\end{tabular}
+	\caption{Zawartość kanałów komunikacyjnych CVEC}
+\end{table}
+
+\begin{table}[H]
+	\begin{tabular}{||c|cc||}
+		
+	\end{tabular}
+	\caption{Zawartość kanałów komunikacyjnych CVERE}
+\end{table}
+
+
+\begin{table}[H]
+	\begin{tabular}{||c|cc||}
+		
+	\end{tabular}
+	\caption{Zawartość kanałów komunikacyjnych CREVE}
+\end{table}
+
+\section{Specyfikacja podystemu sterowania}
+
+\begin{table}[H]
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.99\linewidth]{}
+		\caption{Automat skończony podsystemu sterowania}
+		\label{fig:agents}
+	\end{figure}
+
+	
+	\begin{table}[H]
+		\begin{tabular}{||c|cc||}
+			
+		\end{tabular}
+		\caption{Przyporządkowanie zachowań do kolejnych stanów podsystemu sterowania}
+	\end{table}
+
+	\begin{table}[H]
+		\begin{tabular}{||c|cc||}
+			
+		\end{tabular}
+		\caption{Warunki końcowe funkcji przejścia kolejnych zachowań}
+	\end{table}
+
+	\begin{tabular}{||c|cc||}
+		
+	\end{tabular}
+	\caption{Kompozycja funkcji przejść}
+\end{table}
+
+\end{document}
