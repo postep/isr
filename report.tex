@@ -22,7 +22,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.99\linewidth]{}
+	%\includegraphics[width=0.99\linewidth]{}
 	\caption{Przypadki użycia systemu}
 	\label{fig:uc}
 \end{figure}
@@ -31,7 +31,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.99\linewidth]{}
+	%\includegraphics[width=0.99\linewidth]{}
 	\caption{Struktura agentów}
 	\label{fig:agents}
 \end{figure}
@@ -43,12 +43,21 @@
 		Kanał & Opis & Typ \\
 		\hline\hline
 		Command & - & - \\
-		cip & Polecenie ruchu w przestrzeni kartezjańskiej & struktura \\
-  		jip & Polecenie ruchu w przestrzeni stawów & struktura \\
-  		scl & Polecenie ruch w trybie Self Collision Avoidance & bool \\
-		si & polecenie rozpoczęcia inicjalizacji & bool \\
-		ei & polecenie zakończenia inicjalizacji & bool \\
-		es & polecenie awaryjnego zatrzymania & bool \\
+		ti & zadany prąd silnika tułowia & float \\
+		te & polecenie załączenia silnika tułowia & float \\
+		lt & zadane momenty stawów lewego ramienia & float[7] \\
+		rt & zadane momenty stawów prawego ramienia & float[7] \\
+		hpq & zadany obrót głowy & float \\
+		hph & polecenie zaczęcia synchronizacji obrotu głowy & bool \\
+		hpe & polecenie włączenia silnia obrotu głowy & bool \\
+		htq & zadane wychylenie głowy & float \\
+		hth & polecenie zaczęcia synchronizacji wychylenia  głowy & bool \\
+		hte & polecenie włączenia silnia wychylenia  głowy & bool \\
+		lh & polecenie obsługi lewej ręki & struktura \\
+		lhr & polecenie resetowania lewej ręki & bool \\
+		rh & polecenie obsługi prawej ręki & struktura \\
+		rhr & polecenie resetowania prawej ręki & bool \\
+		
 		\hline
 	\end{tabular}
 	\caption{Zawartość kanałów komunikacyjnych CCVE}
@@ -59,21 +68,50 @@
 		\hline
 		Kanał & Opis & Typ \\
 		\hline\hline
-		Command & - & - \\
-		cip & Polecenie ruchu w przestrzeni kartezjańskiej & struktura \\
-		jip & Polecenie ruchu w przestrzeni stawów & struktura \\
-		scl & Polecenie ruch w trybie Self Collision Avoidance & bool \\
-		si & polecenie rozpoczęcia inicjalizacji & bool \\
-		ei & polecenie zakończenia inicjalizacji & bool \\
-		es & polecenie awaryjnego zatrzymania & bool \\
-		\hline
+		Status & - & - \\
+		lap & pozycja stawów lewego ramienia & float[7] \\
+		rap & pozycja stawów prawego ramienia & float[7] \\
+		lfts & siły i momenty odczytane z lewego czujnika siły & double[6] \\
+		rfts & siły i momenty odczytane z prawego czujnika siły & double[6] \\
+		lh & informacja diagnostyczna lewej ręki & struktura \\
+		rh & informacja diagnostyczna prawej ręki & struktura \\
+		thr & informacja o potrzebie synchronizacji stawu tułowia & bool  \\
+		th & synchronizacja stawu tułowia w toku & bool \\
+		te & silnik stawu tułowia aktywny & bool \\
+		t & pozycja stawu tułowia & float \\
+		hphr & informacja o potrzebie synchronizacji stawu wychylenia głowy & bool \\
+		hph & synchronizacja stawu wychylenia głowy w toku & bool \\
+		hpe & silnik stawu wychylenia głowy aktywny & bool \\
+		hp & pozycja stawu wychylenia głowy & float \\
+		hthr & informacja o potrzebie synchronizacji stawu wychylenia głowy & bool \\
+		hth & synchronizacja wychylenia głowy w toku & bool \\
+		hte & silnik stawu wychylenia głowy aktywny & bool \\
+		ht & pozycja stawu wychylenia głowy & float \\
 	\end{tabular}
 	\caption{Zawartość kanałów komunikacyjnych CVEC}
 \end{table}
 
 \begin{table}[H]
 	\begin{tabular}{||c|cc||}
-		
+		\hline
+		Kanał & Opis & Typ \\
+		\hline\hline
+		LLWR Command & - & - \\
+		llwrc & wiadomość sterowania lewego ramienia & struktura \\
+		RLWR Command & - & - \\
+		rlwrc & wiadomość sterowania prawego ramienia & struktura \\
+		EC Command
+		lfts & wiadomość sterowania lewego czujnika FTS & struktura \\
+		rfts & wiadomość sterowania prawego czujnika FTS & struktura \\
+		hpt & zadany obrót głowy & int \\
+		hpc & konfiguracja stawu obrotu głowy & struktura \\
+		htt & zadane wychylenie głowy & int \\
+		htc & konfiguracja stawu wychylenia głowy & struktura \\
+		tt & zadany obrót torsu & int \\
+		tc & konfiguracja stawu torsu & struktura \\
+		lh & wiadomość obsługi lewej ręki & struktura \\
+		rh & wiadomość obsługi prawej reki & struktura \\
+		\hline
 	\end{tabular}
 	\caption{Zawartość kanałów komunikacyjnych CVERE}
 \end{table}
@@ -81,7 +119,37 @@
 
 \begin{table}[H]
 	\begin{tabular}{||c|cc||}
-		
+		\hline
+		Kanał & Opis & Typ \\
+		\hline\hline
+		LLWR status & - & - \\
+		lap & pozycja stawów lewego ramienia & float[7] \\
+		rap & pozycja stawów prawego ramienia & float[7] \\
+		hls & kod statusu odchylenia głowy & int \\
+		lq & pozycje stawów lewego ramienia & int[7] \\
+		ldq & prędkości stawów lewego ramienia & int[7]\\
+		lt & momenty stawów lewego ramienia & int[7]\\
+		lwr & pozycja końcówki lewego ramienia & int[6]\\
+		ls & kod statusu lewego ramienia & int\\
+		LLWR status & - & - \\
+		rq & pozycje stawów prawego ramienia & int[7]\\
+		rdq & prędkości stawów prawego ramienia & int[7]\\
+		rt & momenty stawów prawego ramienia & int[7]\\
+		rwr & pozycja końcówki prawego ramienia & int[6]\\
+		rs & kod statusu prawego ramienia & int\\
+		EC status & - & - \\
+		ftsL & siły i momenty odczytane z lewego czujnika siły & double[6] \\
+		ftsR & siły i momenty odczytane z prawego czujnika siły & double[6] \\
+		lftss & kod statusu lewego czujnika siły & int \\
+		lftsc & licznik odczytów lewego czujnika siły & int \\
+		rftss & kod statusu prawego czujnika siły & int \\
+		rftsc & licznik odczytów prawego czujnika siły & int \\
+		hp & obrót głowy & int \\
+		hpv & prędkośc  obrotu głowy & int \\
+		hps & kod statusu obrotu głowy & int \\ 
+		ht & odchylenie głowy & int \\
+		hlv & prędkośc  odchylania głowy & int \\
+		\hline
 	\end{tabular}
 	\caption{Zawartość kanałów komunikacyjnych CREVE}
 \end{table}
@@ -91,24 +159,33 @@
 \begin{table}[H]
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.99\linewidth]{}
+		%\includegraphics[width=0.99\linewidth]{}
 		\caption{Automat skończony podsystemu sterowania}
 		\label{fig:agents}
 	\end{figure}
 
 	
 	\begin{table}[H]
-		\begin{tabular}{||c|cc||}
+		\begin{tabular}{||c|c||}
+		Stan & Zachowanie \\
+		\hline \hline
+
 			
 		\end{tabular}
 		\caption{Przyporządkowanie zachowań do kolejnych stanów podsystemu sterowania}
 	\end{table}
 
 	\begin{table}[H]
-		\begin{tabular}{||c|cc||}
-			
+		\begin{tabular}{||cc|c||}
+		Stan początkowy & Stan końcowy & Zachowanie \\
+		\hline \hline
+		safe & cart\_imp & $\neg{IN\_ERROR} \and recvCartImpCmd $ \\
+		safe & jnt\_imp & $\neg{IN\_ERROR} \and recvJntImpCmd $ \\
+		safe & safe\_col & $\neg{IN\_ERROR} \and recvSafeColCmd $ \\
+		safe\_col & cart\_imp $\neg{IN\_ERROR} \and recvCartImpCmd $ \\
+		safe\_col & jnt\_imp $\neg{IN\_ERROR} \and recvJntImpCmd $ \\
 		\end{tabular}
-		\caption{Warunki końcowe funkcji przejścia kolejnych zachowań}
+		\caption{Warunki przejść pomiędzy stanami podsytemu sterowania}
 	\end{table}
 
 	\begin{tabular}{||c|cc||}
