@@ -2,12 +2,12 @@
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{multirow}
 \usepackage{mathtools,leftidx}% http://ctan.org/pkg/{mathtools,leftidx}
 \usepackage{graphicx}
 \usepackage{float}
 
 \usepackage[margin=0.7in]{geometry}
-
 
 
 \title{Specyfikacja sterownika robota Velma}
@@ -18,180 +18,180 @@
 
 \maketitle
 
-\section{Przypadki użycia}
+Robot Velma (rys. \ref{fig:uc}) został skonstruowany w laboratorium robotyki. Posiada dwa ramiona sterowane impedancyjnie i może obracać tułowiem. Robot może działać w swojej przestrzeni konfiguracyjnej i operacyjnej.
 
 \begin{figure}[H]
 	\centering
-	%\includegraphics[width=0.99\linewidth]{}
+	\includegraphics[width=0.7\linewidth]{velma}
 	\caption{Przypadki użycia systemu}
 	\label{fig:uc}
 \end{figure}
 
 \section{Struktura agentów systemu}
+Sterownik robota został zdefiniowany jako dwa agenty (rys. \ref{fig:agents}). Agent \textbf{velma} steruje pracą robota i kontroluje jego urządzenia. Agent \textbf{velma\_ros\_interface} służy do wydawania poleceń dla robota i kontroli stanu.
+
+W sprawozdaniu szczegółowo opisany jest tylko agent \textbf{velma}.
 
 \begin{figure}[H]
 	\centering
-	%\includegraphics[width=0.99\linewidth]{}
+	\includegraphics[width=0.8\linewidth]{main}
 	\caption{Struktura agentów}
 	\label{fig:agents}
 \end{figure}
 
+Poniżej przedstawiono zawartość kanałów informacyjnych robota.
+\begin{table}[H]
+	\begin{tabular}{||c|cc||}
+		\hline\hline
+		ca\_instruction\_cmd & Opis & Typ \\
+		\hline\hline
+		inst & instrukcje sterowania & struktura \\
+		\hline\hline
+		ca\_instruction\_st & Opis & Typ \\
+		\hline\hline
+		stat & status robota & struktura \\
+		\hline
+	\end{tabular}
+	\label{tab:ca}
+	\caption{Zawartość kanałów komunikacyjnych CA}
+\end{table}
+
 
 \begin{table}[H]
 	\begin{tabular}{||c|cc||}
-		\hline
-		Kanał & Opis & Typ \\
 		\hline\hline
-		Command & - & - \\
-		ti & zadany prąd silnika tułowia & float \\
-		te & polecenie załączenia silnika tułowia & float \\
+		ccve\_lLwrCmd & Opis & Typ \\
+		\hline\hline
+
 		lt & zadane momenty stawów lewego ramienia & float[7] \\
+		\hline\hline
+		ccve\_rLwrCmd & Opis & Typ \\
+		\hline\hline
+
 		rt & zadane momenty stawów prawego ramienia & float[7] \\
-		hpq & zadany obrót głowy & float \\
-		hph & polecenie zaczęcia synchronizacji obrotu głowy & bool \\
-		hpe & polecenie włączenia silnia obrotu głowy & bool \\
-		htq & zadane wychylenie głowy & float \\
-		hth & polecenie zaczęcia synchronizacji wychylenia  głowy & bool \\
-		hte & polecenie włączenia silnia wychylenia  głowy & bool \\
-		lh & polecenie obsługi lewej ręki & struktura \\
-		lhr & polecenie resetowania lewej ręki & bool \\
-		rh & polecenie obsługi prawej ręki & struktura \\
-		rhr & polecenie resetowania prawej ręki & bool \\
-		
+		\hline\hline
+		ccve\_tCmd & Opis & Typ \\
+		\hline\hline
+		tq & zadany obrót tułowia & float \\
+		th & polecenie zaczęcia synchronizacji obrotu tułowia & bool \\
+		te & polecenie załączenia silnika tułowia & float \\
 		\hline
 	\end{tabular}
+	\label{tab:ccve}
 	\caption{Zawartość kanałów komunikacyjnych CCVE}
 \end{table}
 
 \begin{table}[H]
 	\begin{tabular}{||c|cc||}
-		\hline
-		Kanał & Opis & Typ \\
 		\hline\hline
-		Status & - & - \\
-		lap & pozycja stawów lewego ramienia & float[7] \\
-		rap & pozycja stawów prawego ramienia & float[7] \\
-		lfts & siły i momenty odczytane z lewego czujnika siły & double[6] \\
-		rfts & siły i momenty odczytane z prawego czujnika siły & double[6] \\
-		lh & informacja diagnostyczna lewej ręki & struktura \\
-		rh & informacja diagnostyczna prawej ręki & struktura \\
-		thr & informacja o potrzebie synchronizacji stawu tułowia & bool  \\
-		th & synchronizacja stawu tułowia w toku & bool \\
-		te & silnik stawu tułowia aktywny & bool \\
-		t & pozycja stawu tułowia & float \\
-		hphr & informacja o potrzebie synchronizacji stawu wychylenia głowy & bool \\
-		hph & synchronizacja stawu wychylenia głowy w toku & bool \\
-		hpe & silnik stawu wychylenia głowy aktywny & bool \\
-		hp & pozycja stawu wychylenia głowy & float \\
-		hthr & informacja o potrzebie synchronizacji stawu wychylenia głowy & bool \\
-		hth & synchronizacja wychylenia głowy w toku & bool \\
-		hte & silnik stawu wychylenia głowy aktywny & bool \\
-		ht & pozycja stawu wychylenia głowy & float \\
+		cvec\_lLwrStatus & Opis & Typ \\
+		\hline\hline
+		lt & pozycja stawów lewego ramienia & float[7] \\
+		ls & informacje diagnostyczne lewego ramienia & bool \\
+		\hline\hline
+		cvec\_rLwrStatus & Opis & Typ \\
+		\hline\hline
+		rs & informacje diagnostyczne prawego ramienia & bool \\
+		rt & pozycja stawów prawego ramienia & float[7] \\
+		\hline\hline
+		cvec\_t & Opis & Typ \\
+		\hline\hline
+		tsh & synchronizacja stawu tułowia w toku & bool \\
+		tse & silnik stawu tułowia aktywny & bool \\
+		tsq & pozycja stawu tułowia & float \\
+		\hline
 	\end{tabular}
+	\label{tab:cvec}
 	\caption{Zawartość kanałów komunikacyjnych CVEC}
 \end{table}
 
-\begin{table}[H]
-	\begin{tabular}{||c|cc||}
-		\hline
-		Kanał & Opis & Typ \\
-		\hline\hline
-		LLWR Command & - & - \\
-		llwrc & wiadomość sterowania lewego ramienia & struktura \\
-		RLWR Command & - & - \\
-		rlwrc & wiadomość sterowania prawego ramienia & struktura \\
-		EC Command
-		lfts & wiadomość sterowania lewego czujnika FTS & struktura \\
-		rfts & wiadomość sterowania prawego czujnika FTS & struktura \\
-		hpt & zadany obrót głowy & int \\
-		hpc & konfiguracja stawu obrotu głowy & struktura \\
-		htt & zadane wychylenie głowy & int \\
-		htc & konfiguracja stawu wychylenia głowy & struktura \\
-		tt & zadany obrót torsu & int \\
-		tc & konfiguracja stawu torsu & struktura \\
-		lh & wiadomość obsługi lewej ręki & struktura \\
-		rh & wiadomość obsługi prawej reki & struktura \\
-		\hline
-	\end{tabular}
-	\caption{Zawartość kanałów komunikacyjnych CVERE}
-\end{table}
-
-
-\begin{table}[H]
-	\begin{tabular}{||c|cc||}
-		\hline
-		Kanał & Opis & Typ \\
-		\hline\hline
-		LLWR status & - & - \\
-		lap & pozycja stawów lewego ramienia & float[7] \\
-		rap & pozycja stawów prawego ramienia & float[7] \\
-		hls & kod statusu odchylenia głowy & int \\
-		lq & pozycje stawów lewego ramienia & int[7] \\
-		ldq & prędkości stawów lewego ramienia & int[7]\\
-		lt & momenty stawów lewego ramienia & int[7]\\
-		lwr & pozycja końcówki lewego ramienia & int[6]\\
-		ls & kod statusu lewego ramienia & int\\
-		LLWR status & - & - \\
-		rq & pozycje stawów prawego ramienia & int[7]\\
-		rdq & prędkości stawów prawego ramienia & int[7]\\
-		rt & momenty stawów prawego ramienia & int[7]\\
-		rwr & pozycja końcówki prawego ramienia & int[6]\\
-		rs & kod statusu prawego ramienia & int\\
-		EC status & - & - \\
-		ftsL & siły i momenty odczytane z lewego czujnika siły & double[6] \\
-		ftsR & siły i momenty odczytane z prawego czujnika siły & double[6] \\
-		lftss & kod statusu lewego czujnika siły & int \\
-		lftsc & licznik odczytów lewego czujnika siły & int \\
-		rftss & kod statusu prawego czujnika siły & int \\
-		rftsc & licznik odczytów prawego czujnika siły & int \\
-		hp & obrót głowy & int \\
-		hpv & prędkośc  obrotu głowy & int \\
-		hps & kod statusu obrotu głowy & int \\ 
-		ht & odchylenie głowy & int \\
-		hlv & prędkośc  odchylania głowy & int \\
-		\hline
-	\end{tabular}
-	\caption{Zawartość kanałów komunikacyjnych CREVE}
-\end{table}
 
 \section{Specyfikacja podystemu sterowania}
 
-\begin{table}[H]
+Podsystem sterowania robota (rys. \ref{fig:fsm}) ma za zadanie wykonywać zadania narzucone przez agenta \textbf{velma\_ros\_interface}. Jest odpowiedzialny za generację trajektorii oraz wyliczanie praw sterowania. Kontroluje podsystem wirtualnego efektora i zapobiega sytuacjom awaryjnym. Inicjalizuje włączanie i synchronizację silników.
+
+Podstem działa w oparciu o maszynę stanów (rys. \ref{fig:fsm}). Stany są przełączane na podstawie predykatów (tab. \ref{tab:pred}).
+
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.99\linewidth]{}
+		\includegraphics[width=0.4\linewidth]{fsm_cs}
 		\caption{Automat skończony podsystemu sterowania}
-		\label{fig:agents}
+		\label{fig:fsm}
 	\end{figure}
 
-	
 	\begin{table}[H]
 		\begin{tabular}{||c|c||}
+		\hline
+		Nazwa predykatu & Opis \\
+		\hline \hline
+		CURRENT\_BEHAVIOR\_OK & podsystem sterowania pracuje normalnie \\
+		recvOneCmd & otrzymano dokładnie jedną wiadomość sterowania \\
+		recvCartImpCmd & otrzymano wiadomość sterowania w trybie cart\_imp \\
+		recvJntImpCmd & otrzymano wiadomość sterowania w trybie jnt\_imp \\
+		recvSafeColCmd & otrzymano wiadomośc pracy w trybie safe\_col \\
+		inSelfCollision & robot jest w stanie autokolizji \\
+		IN\_ERROR & wykryto błąd systemu \\
+		\hline
+		\end{tabular}
+		\label{tab:pred}
+		\caption{Definicja predykatów}
+	\end{table}
+
+
+Do każdego stanu przyporządkowano zachowania (tab. \ref{tab:beh}). Zachowanie \textbf{idle} jest osiągane po włączeniu robota. Zachowanie \textbf{safeCol} pozwala poruszać się w trybie unikania kolizji. Zachowanie \textbf{cartImp} odpowiada sterowaniu w przestrzeni operacyjnej a zachowanie \textbf{jntImp} w przestrzeni konfiguracyjnej. Zachowanie \textbf{safe} jest osiągane przy wykryciu błędu systemu.
+
+	\begin{table}[H]
+		\begin{tabular}{||c|c||}
+		\hline
 		Stan & Zachowanie \\
 		\hline \hline
-
-			
+		st\_idle & idle \\
+		st\_safe & safe \\
+		st\_cart\_imp & cart\_imp \\
+		st\_jnt\_imp & jnt\_imp \\
+		st\_safe\_cold & safe\_col \\
+		\hline
 		\end{tabular}
+		\label{tab:beh}
 		\caption{Przyporządkowanie zachowań do kolejnych stanów podsystemu sterowania}
 	\end{table}
 
 	\begin{table}[H]
 		\begin{tabular}{||cc|c||}
+		\hline
 		Stan początkowy & Stan końcowy & Zachowanie \\
 		\hline \hline
-		safe & cart\_imp & $\neg{IN\_ERROR} \and recvCartImpCmd $ \\
-		safe & jnt\_imp & $\neg{IN\_ERROR} \and recvJntImpCmd $ \\
-		safe & safe\_col & $\neg{IN\_ERROR} \and recvSafeColCmd $ \\
-		safe\_col & cart\_imp $\neg{IN\_ERROR} \and recvCartImpCmd $ \\
-		safe\_col & jnt\_imp $\neg{IN\_ERROR} \and recvJntImpCmd $ \\
+		st\_safe & st\_cart\_imp & $\neg{IN\_ERROR} \wedge recvCartImpCmd $ \\
+		st\_safe & st\_jnt\_imp & $\neg{IN\_ERROR} \wedge recvJntImpCmd $ \\
+		st\_safe & st\_safe\_col & $\neg{IN\_ERROR} \wedge recvSafeColCmd $ \\
+		st\_safe\_col & st\_cart\_imp & $\neg{IN\_ERROR} \wedge recvCartImpCmd $ \\
+		st\_safe\_col & st\_jnt\_imp & $\neg{IN\_ERROR} \wedge recvJntImpCmd $ \\
+		st\_cart\_imp & st\_safe & $\neg{IN\_ERROR} \wedge \neg{recvOneCmd} $ \\
+		st\_cart\_imp & st\_jnt\_imp & $\neg{IN\_ERROR} \wedge \neg{recvOneCmd} \wedge recvJntImpCmd $ \\
+		st\_cart\_imp & st\_safe\_col & $\neg{IN\_ERROR} \wedge \neg{recvOneCmd} \wedge recvSafeColCmd $ \\
+		st\_jnt\_imp & st\_safe & $\neg{IN\_ERROR} \wedge \neg{recvOneCmd} $ \\
+		st\_jnt\_imp & st\_cart\_imp & $\neg{IN\_ERROR} \wedge \neg{recvOneCmd} \wedge recvCartImpCmd $ \\
+		st\_jnt\_imp & st\_safe\_col & $\neg{IN\_ERROR} \wedge \neg{recvOneCmd} \wedge recvSafeColCmd $ \\
+		dowolny & idle & $IN\_ERROR$\\
+		\hline
 		\end{tabular}
 		\caption{Warunki przejść pomiędzy stanami podsytemu sterowania}
 	\end{table}
+\newpage
+Przykładowa funkcja przejścia \textbf{jntMove} (tab. \ref{tab:fp}, rys. \ref{fig:jnt}) jest odpowiedzialna za wykonanie ruchu w przestrzeni konfiguracyjnej.
 
-	\begin{tabular}{||c|cc||}
-		
-	\end{tabular}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{przejscia}
 	\caption{Kompozycja funkcji przejść}
-\end{table}
+	\label{tab:fp}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{jntMove}
+	\caption{$Fp$ jntMove}
+	\label{fig:jnt}
+\end{figure}
 
 \end{document}
