@@ -52,8 +52,8 @@ Poniżej przedstawiono zawartość kanałów informacyjnych robota.
 		stat & status robota & struktura \\
 		\hline
 	\end{tabular}
-	\label{tab:ca}
 	\caption{Zawartość kanałów komunikacyjnych CA}
+	\label{tab:ca}
 \end{table}
 
 
@@ -77,8 +77,8 @@ Poniżej przedstawiono zawartość kanałów informacyjnych robota.
 		te & polecenie załączenia silnika tułowia & float \\
 		\hline
 	\end{tabular}
-	\label{tab:ccve}
 	\caption{Zawartość kanałów komunikacyjnych CCVE}
+	\label{tab:ccve}
 \end{table}
 
 \begin{table}[H]
@@ -101,8 +101,8 @@ Poniżej przedstawiono zawartość kanałów informacyjnych robota.
 		tsq & pozycja stawu tułowia & float \\
 		\hline
 	\end{tabular}
-	\label{tab:cvec}
 	\caption{Zawartość kanałów komunikacyjnych CVEC}
+	\label{tab:cvec}
 \end{table}
 
 
@@ -133,12 +133,12 @@ Podstem działa w oparciu o maszynę stanów (rys. \ref{fig:fsm}). Stany są pr
 		IN\_ERROR & wykryto błąd systemu \\
 		\hline
 		\end{tabular}
-		\label{tab:pred}
 		\caption{Definicja predykatów}
+		\label{tab:pred}
 	\end{table}
 
 
-Do każdego stanu przyporządkowano zachowania (tab. \ref{tab:beh}). Zachowanie \textbf{idle} jest osiągane po włączeniu robota. Zachowanie \textbf{safeCol} pozwala poruszać się w trybie unikania kolizji. Zachowanie \textbf{cartImp} odpowiada sterowaniu w przestrzeni operacyjnej a zachowanie \textbf{jntImp} w przestrzeni konfiguracyjnej. Zachowanie \textbf{safe} jest osiągane przy wykryciu błędu systemu.
+Do każdego stanu przyporządkowano zachowania (tab. \ref{tab:beh}, tab. \ref{tab:przej}). Zachowanie \textbf{idle} jest osiągane po włączeniu robota. Zachowanie \textbf{safeCol} pozwala poruszać się w trybie unikania kolizji. Zachowanie \textbf{cartImp} odpowiada sterowaniu w przestrzeni operacyjnej a zachowanie \textbf{jntImp} w przestrzeni konfiguracyjnej. Zachowanie \textbf{safe} jest osiągane przy wykryciu błędu systemu.
 
 	\begin{table}[H]
 		\begin{tabular}{||c|c||}
@@ -152,14 +152,14 @@ Do każdego stanu przyporządkowano zachowania (tab. \ref{tab:beh}). Zachowanie 
 		st\_safe\_cold & safe\_col \\
 		\hline
 		\end{tabular}
-		\label{tab:beh}
 		\caption{Przyporządkowanie zachowań do kolejnych stanów podsystemu sterowania}
+		\label{tab:beh}
 	\end{table}
 
 	\begin{table}[H]
 		\begin{tabular}{||cc|c||}
 		\hline
-		Stan początkowy & Stan końcowy & Zachowanie \\
+		Stan początkowy & Stan końcowy & Warunki predykatów \\
 		\hline \hline
 		st\_safe & st\_cart\_imp & $\neg{IN\_ERROR} \wedge recvCartImpCmd $ \\
 		st\_safe & st\_jnt\_imp & $\neg{IN\_ERROR} \wedge recvJntImpCmd $ \\
@@ -176,9 +176,10 @@ Do każdego stanu przyporządkowano zachowania (tab. \ref{tab:beh}). Zachowanie 
 		\hline
 		\end{tabular}
 		\caption{Warunki przejść pomiędzy stanami podsytemu sterowania}
+		\label{tab:przej}
 	\end{table}
 \newpage
-Przykładowa funkcja przejścia \textbf{jntMove} (tab. \ref{tab:fp}, rys. \ref{fig:jnt}) jest odpowiedzialna za wykonanie ruchu w przestrzeni konfiguracyjnej.
+Przykładowa funkcja przejścia \textbf{jntMove} (rys. \ref{tab:fp}, rys. \ref{fig:jnt}) jest odpowiedzialna za wykonanie ruchu w przestrzeni konfiguracyjnej.
 
 \begin{figure}[H]
 	\centering
